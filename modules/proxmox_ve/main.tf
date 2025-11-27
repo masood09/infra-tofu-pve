@@ -29,7 +29,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
 
   cdrom {
-    file_id = "pve-nas-storage:iso/nixos-install.iso"
+    file_id = "local:iso/nixos-install.iso"
   }
 
   disk {
