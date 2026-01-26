@@ -21,35 +21,9 @@ provider "proxmox" {
   }
 }
 
-module "proxmox_vms" {
-  source   = "./modules/proxmox_ve"
-  for_each = var.proxmox_vms
-
-  providers = {
-    proxmox = proxmox
-  }
-
-  node_name = each.value.node_name
-  name      = each.key
-
-  cpu_cores = each.value.cpu_cores
-  cpu_units = each.value.cpu_units
-
-  memory_dedicated = each.value.memory_dedicated
-  memory_floating  = each.value.memory_floating
-
-  efi_datastore  = each.value.efi_datastore
-  disk_datastore = each.value.disk_datastore
-  disk_size      = each.value.disk_size
-
-  network_mac = each.value.network_mac
-
-  ha_enabled = lookup(each.value, "ha_enabled", false)
-}
-
-resource "proxmox_virtual_environment_vm" "vm" {
+resource "proxmox_virtual_environment_vm" "trialunit" {
   node_name     = "pve-01"
-  name          = "nas-test"
+  name          = "trialunit"
   description   = "Managed by OpenTofu"
   on_boot       = true
   scsi_hardware = "virtio-scsi-single"
@@ -77,12 +51,12 @@ resource "proxmox_virtual_environment_vm" "vm" {
   }
 
   cdrom {
-    file_id = "local:iso/nixos-install.iso"
+    file_id = "local:iso/nixos.iso"
   }
 
   disk {
     datastore_id = "pve-storage"
-    size         = "20"
+    size         = "50"
     file_format  = "raw"
     interface    = "scsi0"
     iothread     = true
@@ -90,7 +64,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = "pve-storage"
-    size         = "20"
+    size         = "50"
     file_format  = "raw"
     interface    = "scsi1"
     iothread     = true
@@ -98,7 +72,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = "pve-storage"
-    size         = "2"
+    size         = "10"
     file_format  = "raw"
     interface    = "scsi2"
     iothread     = true
@@ -106,7 +80,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = "pve-storage"
-    size         = "2"
+    size         = "10"
     file_format  = "raw"
     interface    = "scsi3"
     iothread     = true
@@ -114,7 +88,7 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = "pve-storage"
-    size         = "2"
+    size         = "10"
     file_format  = "raw"
     interface    = "scsi4"
     iothread     = true
@@ -122,9 +96,25 @@ resource "proxmox_virtual_environment_vm" "vm" {
 
   disk {
     datastore_id = "pve-storage"
-    size         = "2"
+    size         = "10"
     file_format  = "raw"
     interface    = "scsi5"
+    iothread     = true
+  }
+
+  disk {
+    datastore_id = "pve-storage"
+    size         = "10"
+    file_format  = "raw"
+    interface    = "scsi6"
+    iothread     = true
+  }
+
+  disk {
+    datastore_id = "pve-storage"
+    size         = "10"
+    file_format  = "raw"
+    interface    = "scsi7"
     iothread     = true
   }
 
